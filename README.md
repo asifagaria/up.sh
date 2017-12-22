@@ -18,8 +18,10 @@ Modifier les variables en début de script :
 ```
 nano /home/user/up.sh
 ```
+```
 USER="user_seedbox" # Utilisateur seedbox
 TRACKER="http://jack.yggtorrent.com:8080//announce" #https://yggtorrent.com/user/upload_torrent
+```
 
 Fichier NFO stocké dans /home/user/nfo
 Fichier torrent stocké dans /home/user/stocktorrent/film,serie,jeux etc....
