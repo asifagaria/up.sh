@@ -1,4 +1,4 @@
-*#!/bin/bash
+#!/bin/bash
 # Auteur : U3kiPyudNy6GT
 # Optimise pour Plex Media Server
 # Creation des .torrent et .nfo avec verification doublons .torrent
@@ -7,7 +7,7 @@
 # Variables
 # Principal
 USER="" # Utilisateur seedbox
-TRACKER="http://jack.yggtorrent.com:8080/passkey/announce"
+TRACKER="http://jack.yggtorrent.com:8080/passkey/announce" #remplacez passkey par votre clef privée
 # Dossier upload (a modifier avec vos emplacements exact)
 UPSERIE="/home/$USER/torrents/series"
 UPFILM="/home/$USER/torrents/film"
