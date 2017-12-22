@@ -1,6 +1,6 @@
 Script .torrent et .nfo rapide avec mktorrent et mediainfo
 
-#Installation :
+Installation :
 (Remplacer User partout)
 
 cd /tmp
