@@ -34,4 +34,6 @@ Utilisation :
 ./up.sh --musique
 ./up.sh --jeu
 ```
+Pendant l'exécution du script il vous sera demander le nom du fichier/ou du dossier cible.
 
+![caps1](https://user-images.githubusercontent.com/34775368/34308900-ac0ed54a-e74f-11e7-8923-d25017f27331.PNG)
