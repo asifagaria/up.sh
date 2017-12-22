@@ -26,7 +26,7 @@ TRACKER="http://jack.yggtorrent.com:8080//announce" #https://yggtorrent.com/user
 * Fichier NFO stocké dans /home/user/nfo
 * Fichier torrent stocké dans /home/user/stocktorrent/film,serie,jeux etc....
 
-Utilisation :
+### Utilisation :
 ```
 ./up.sh --film
 ./up.sh --serie
