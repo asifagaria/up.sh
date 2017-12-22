@@ -1,6 +1,6 @@
 Script .torrent et .nfo rapide avec mktorrent et mediainfo
 
-Installation :
+#Installation :
 (Remplacer User partout)
 
 cd /tmp
@@ -12,7 +12,6 @@ Modifier les variables en début de script :
 
 nano /home/user/up.sh
 
-# Principal
 USER="user_seedbox" # Utilisateur seedbox
 TRACKER="http://jack.yggtorrent.com:8080//announce" #https://yggtorrent.com/user/upload_torrent
 
