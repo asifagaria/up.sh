@@ -1,6 +1,9 @@
-Script .torrent et .nfo rapide avec mktorrent et mediainfo
+# Script .torrent et .nfo rapide avec mktorrent et mediainfo
 
-Installation :
+* Nécésite Debian 7/8/9
+* Inclus mktorrent et mediainfo
+
+## Installation :
 (Remplacer User partout)
 
 cd /tmp
