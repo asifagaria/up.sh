@@ -23,7 +23,7 @@ USER="user_seedbox" # Utilisateur seedbox
 TRACKER="http://tracker.bittorrent.com:8080//announce" #https://yggtorrent.com/user/upload_torrent
 ```
 
-* NFO file stored dans /home/user/nfo
+* NFO file stored in /home/user/nfo
 * Torrent file stored in /home/user/stocktorrent/film,serie,games etc....
 
 ### How To use :
