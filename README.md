@@ -1,40 +1,40 @@
-# Script .torrent et .nfo rapide avec mktorrent et mediainfo
+# .Torrent and fast .nfo script with mktorrent and mediainfo
 
-* Nécessite Debian 7/8/9
+* Need Debian 7/8/9
 * Inclus mktorrent et mediainfo
 
-**Auteur :** U3kiPyudNy6GT
+**Auteur :** Asifagaria
 
 ## Installation :
-(Remplacer User partout)
+(Replace User everywhere)
 ```
 cd /tmp
-git clone https://github.com/fatality899/up.sh
+git clone https://github.com/asifagaria/up.sh
 cp /tmp/up.sh/up.sh /home/user/up.sh
 chmod a+x /home/user/up.sh
 ```
 
-Modifier les variables en début de script :
+Modify the variables at the beginning of the script:
 ```
 nano /home/user/up.sh
 ```
 ```
 USER="user_seedbox" # Utilisateur seedbox
-TRACKER="http://jack.yggtorrent.com:8080//announce" #https://yggtorrent.com/user/upload_torrent
+TRACKER="http://tracker.bittorrent.com:8080//announce" #https://yggtorrent.com/user/upload_torrent
 ```
 
-* Fichier NFO stocké dans /home/user/nfo
-* Fichier torrent stocké dans /home/user/stocktorrent/film,serie,jeux etc....
+* NFO file stored dans /home/user/nfo
+* Torrent file stored in /home/user/stocktorrent/film,serie,games etc....
 
 ### Utilisation :
 ```
 ./up.sh --film
 ./up.sh --serie
 ./up.sh --animation
-./up.sh --musique
-./up.sh --jeu
+./up.sh --music
+./up.sh --game
 ```
-Pendant l'exécution du script il vous sera demander le nom du fichier/ou du dossier cible.
+While running the script you will be asked for the name of the target file / folder.
 
 ![caps1](https://user-images.githubusercontent.com/34775368/34308900-ac0ed54a-e74f-11e7-8923-d25017f27331.PNG)
 
