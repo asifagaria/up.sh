@@ -3,7 +3,7 @@
 * Need Debian 7/8/9
 * Inclus mktorrent et mediainfo
 
-**Auteur :** Asifagaria
+**Author :** Asifagaria
 
 ## Installation :
 (Replace User everywhere)
