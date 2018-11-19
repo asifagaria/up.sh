@@ -26,7 +26,7 @@ TRACKER="http://tracker.bittorrent.com:8080//announce" #https://yggtorrent.com/u
 * NFO file stored dans /home/user/nfo
 * Torrent file stored in /home/user/stocktorrent/film,serie,games etc....
 
-### Utilisation :
+### How To use :
 ```
 ./up.sh --film
 ./up.sh --serie
