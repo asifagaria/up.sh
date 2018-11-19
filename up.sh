@@ -1,28 +1,28 @@
 #!/bin/bash
-# Auteur : U3kiPyudNy6GT
-# Optimise pour Plex Media Server
-# Creation des .torrent et .nfo avec verification doublons .torrent
+# Auteur : Asifagaria
+# Optimizes for Plex Media Server
+# Creation of .torrent and .nfo with double check .torrent
 ###
 
 # Variables
 # Principal
-USER="" # Utilisateur seedbox
-TRACKER="http://jack.yggtorrent.com:8080/passkey/announce" #remplacez passkey par votre clef privée
-# Dossier upload (a modifier avec vos emplacements exact)
+USER="asifagaria" # User seedbox
+TRACKER="http://jack.yggtorrent.com:8080/passkey/announce" #replace passkey with your private key
+# Upload folder (edit with your exact locations)
 UPSERIE="/home/$USER/torrents/series"
-UPFILM="/home/$USER/torrents/film"
+UPFILM="/home/$USER/server/HD-4/Games-5"
 UPANIMATION="/home/$USER/torrents/animation"
-UPJEU="/home/$USER/torrents/jeux"
-UPMUSIQUE="/home/$USER/torrents/musique"
-UPXXX="/home/$USER/torrents/cul"
-# Dossier stockage .torrent
+UPGAME="/home/$USER/server/HD-4/Games-5"
+UPMUSIC="/home/$USER/torrents/MUSIC"
+UPEXTRA="/home/$USER/torrents/ext"
+# Storage folder .torrent
 TORSERIE="/home/$USER/stocktorrents/series"
 TORFILM="/home/$USER/stocktorrents/film"
 TORANIMATION="/home/$USER/stocktorrents/animation"
-TORJEU="/home/$USER/stocktorrents/jeux"
-TORMUSIQUE="/home/$USER/stocktorrents/musique"
-TORXXX="/home/$USER/stocktorrents/cul"
-# Dossier stockage .nfo (pour recuperer facilement les .nfo)
+TORGAME="/home/$USER/stocktorrents/games"
+TORMUSIC="/home/$USER/stocktorrents/MUSIC"
+TOREXTRA="/home/$USER/stocktorrents/ext"
+# .Nfo storage folder (to easily retrieve .nfo)
 STOCKNFO="/home/$USER/nfo"
 ###
 
@@ -33,7 +33,7 @@ if [ "$THREAD" = "" ]; then
 fi
 ###
 
-# Test de presence
+# Test of presence
 #Mktorrent
 command -v mktorrent >/dev/null 2>&1
 if [ $? = 1 ]; then
@@ -46,214 +46,214 @@ if [ $? = 1 ]; then
 fi
 ###
 
-# Detection de la taille du/des fichier(s)
+# Detection of the size of the file (s)
 FONCAUTOSERIE () {
 	TAILLE=$(du -s "$UPSERIE"/"$FILE" | awk '{ print $1 }')
-	if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-		PIECE=15 # 32 Ko
-	elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-		PIECE=16 # 64 Ko
-	elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-		PIECE=17 # 128 Ko
-	elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-		PIECE=18 # 256 Ko
-	elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-		PIECE=19 # 512 Ko
-	elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-		PIECE=20 # 1 Mo
-	elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-		PIECE=21  # 2 Mo
-	elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-		PIECE=22 # 4 Mo
-	elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-		PIECE=23 # 8 Mo
-	elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-		PIECE=24 # 16 Mo
-	elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-		PIECE=25 # 32 Mo
+	if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+		PIECE=15 # 32 Kb
+	elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+		PIECE=16 # 64 Kb
+	elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+		PIECE=17 # 128 Kb
+	elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+		PIECE=18 # 256 Kb
+	elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+		PIECE=19 # 512 Kb
+	elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+		PIECE=20 # 1 Mb
+	elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+		PIECE=21  # 2 Mb
+	elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+		PIECE=22 # 4 Mb
+	elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+		PIECE=23 # 8 Mb
+	elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+		PIECE=24 # 16 Mb
+	elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+		PIECE=25 # 32 Mb
 	fi
 }
 
 FONCAUTOFILM () {
         TAILLE=$(du -s "$UPFILM"/"$FILE" | awk '{ print $1 }')
-        if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-                PIECE=15 # 32 Ko
-        elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-                PIECE=16 # 64 Ko
-        elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-                PIECE=17 # 128 Ko
-        elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-                PIECE=18 # 256 Ko
-        elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-                PIECE=19 # 512 Ko
-        elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-                PIECE=20 # 1 Mo
-        elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-                PIECE=21  # 2 Mo
-        elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-                PIECE=22 # 4 Mo
-        elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-                PIECE=23 # 8 Mo
-        elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-                PIECE=24 # 16 Mo
-        elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-                PIECE=25 # 32 Mo
+        if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+                PIECE=15 # 32 Kb
+        elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+                PIECE=16 # 64 Kb
+        elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+                PIECE=17 # 128 Kb
+        elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+                PIECE=18 # 256 Kb
+        elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+                PIECE=19 # 512 Kb
+        elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+                PIECE=20 # 1 Mb
+        elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+                PIECE=21  # 2 Mb
+        elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+                PIECE=22 # 4 Mb
+        elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+                PIECE=23 # 8 Mb
+        elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+                PIECE=24 # 16 Mb
+        elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+                PIECE=25 # 32 Mb
         fi
 }
 
 FONCAUTOANIMATION () {
         TAILLE=$(du -s "$UPANIMATION"/"$FILE" | awk '{ print $1 }')
-        if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-                PIECE=15 # 32 Ko
-        elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-                PIECE=16 # 64 Ko
-        elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-                PIECE=17 # 128 Ko
-        elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-                PIECE=18 # 256 Ko
-        elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-                PIECE=19 # 512 Ko
-        elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-                PIECE=20 # 1 Mo
-        elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-                PIECE=21  # 2 Mo
-        elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-                PIECE=22 # 4 Mo
-        elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-                PIECE=23 # 8 Mo
-        elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-                PIECE=24 # 16 Mo
-        elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-                PIECE=25 # 32 Mo
+        if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+                PIECE=15 # 32 Kb
+        elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+                PIECE=16 # 64 Kb
+        elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+                PIECE=17 # 128 Kb
+        elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+                PIECE=18 # 256 Kb
+        elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+                PIECE=19 # 512 Kb
+        elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+                PIECE=20 # 1 Mb
+        elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+                PIECE=21  # 2 Mb
+        elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+                PIECE=22 # 4 Mb
+        elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+                PIECE=23 # 8 Mb
+        elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+                PIECE=24 # 16 Mb
+        elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+                PIECE=25 # 32 Mb
         fi
 }
 
-FONCAUTOJEU () {
-        TAILLE=$(du -s "$UPJEU"/"$FILE" | awk '{ print $1 }')
-        if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-                PIECE=15 # 32 Ko
-        elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-                PIECE=16 # 64 Ko
-        elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-                PIECE=17 # 128 Ko
-        elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-                PIECE=18 # 256 Ko
-        elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-                PIECE=19 # 512 Ko
-        elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-                PIECE=20 # 1 Mo
-        elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-                PIECE=21  # 2 Mo
-        elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-                PIECE=22 # 4 Mo
-        elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-                PIECE=23 # 8 Mo
-        elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-                PIECE=24 # 16 Mo
-        elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-                PIECE=25 # 32 Mo
+FONCAUTOGAME () {
+        TAILLE=$(du -s "$UPGAME"/"$FILE" | awk '{ print $1 }')
+        if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+                PIECE=15 # 32 Kb
+        elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+                PIECE=16 # 64 Kb
+        elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+                PIECE=17 # 128 Kb
+        elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+                PIECE=18 # 256 Kb
+        elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+                PIECE=19 # 512 Kb
+        elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+                PIECE=20 # 1 Mb
+        elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+                PIECE=21  # 2 Mb
+        elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+                PIECE=22 # 4 Mb
+        elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+                PIECE=23 # 8 Mb
+        elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+                PIECE=24 # 16 Mb
+        elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+                PIECE=25 # 32 Mb
         fi
 }
 
-FONCAUTOMUSIQUE () {
-        TAILLE=$(du -s "$UPMUSIQUE"/"$FILE" | awk '{ print $1 }')
-        if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-                PIECE=15 # 32 Ko
-        elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-                PIECE=16 # 64 Ko
-        elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-                PIECE=17 # 128 Ko
-        elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-                PIECE=18 # 256 Ko
-        elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-                PIECE=19 # 512 Ko
-        elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-                PIECE=20 # 1 Mo
-        elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-                PIECE=21  # 2 Mo
-        elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-                PIECE=22 # 4 Mo
-        elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-                PIECE=23 # 8 Mo
-        elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-                PIECE=24 # 16 Mo
-        elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-                PIECE=25 # 32 Mo
+FONCAUTOMUSIC () {
+        TAILLE=$(du -s "$UPMUSIC"/"$FILE" | awk '{ print $1 }')
+        if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+                PIECE=15 # 32 Kb
+        elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+                PIECE=16 # 64 Kb
+        elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+                PIECE=17 # 128 Kb
+        elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+                PIECE=18 # 256 Kb
+        elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+                PIECE=19 # 512 Kb
+        elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+                PIECE=20 # 1 Mb
+        elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+                PIECE=21  # 2 Mb
+        elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+                PIECE=22 # 4 Mb
+        elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+                PIECE=23 # 8 Mb
+        elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+                PIECE=24 # 16 Mb
+        elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+                PIECE=25 # 32 Mb
         fi
 }
 
-FONCAUTOXXX () {
-        TAILLE=$(du -s "$UPXXX"/"$FILE" | awk '{ print $1 }')
-        if [ "$TAILLE" -lt 65536 ]; then # - de 64 Mo
-                PIECE=15 # 32 Ko
-        elif [ "$TAILLE" -lt 131072 ]; then # - de 128 Mo
-                PIECE=16 # 64 Ko
-        elif [ "$TAILLE" -lt 262144 ]; then # - de 256 Mo
-                PIECE=17 # 128 Ko
-        elif [ "$TAILLE" -lt 524288 ]; then # - de 512 Mo
-                PIECE=18 # 256 Ko
-        elif [ "$TAILLE" -lt 1048576 ]; then # - de 1 Go
-                PIECE=19 # 512 Ko
-        elif [ "$TAILLE" -lt 2097152 ]; then # - de 2 Go
-                PIECE=20 # 1 Mo
-        elif [ "$TAILLE" -lt 4194304 ]; then # - de 4 Go
-                PIECE=21  # 2 Mo
-        elif [ "$TAILLE" -lt 8388608 ]; then # - de 8 Go
-                PIECE=22 # 4 Mo
-        elif [ "$TAILLE" -lt 16777216 ]; then # - de 16 Go
-                PIECE=23 # 8 Mo
-        elif [ "$TAILLE" -lt 33554432 ]; then # - de 32 Go
-                PIECE=24 # 16 Mo
-        elif [ "$TAILLE" -ge 33554432 ]; then # + de 32 Go
-                PIECE=25 # 32 Mo
+FONCAUTOEXTRA () {
+        TAILLE=$(du -s "$UPEXTRA"/"$FILE" | awk '{ print $1 }')
+        if [ "$TAILLE" -lt 65536 ]; then # - of 64 Mb
+                PIECE=15 # 32 Kb
+        elif [ "$TAILLE" -lt 131072 ]; then # - of 128 Mb
+                PIECE=16 # 64 Kb
+        elif [ "$TAILLE" -lt 262144 ]; then # - of 256 Mb
+                PIECE=17 # 128 Kb
+        elif [ "$TAILLE" -lt 524288 ]; then # - of 512 Mb
+                PIECE=18 # 256 Kb
+        elif [ "$TAILLE" -lt 1048576 ]; then # - of 1 Gb
+                PIECE=19 # 512 Kb
+        elif [ "$TAILLE" -lt 2097152 ]; then # - of 2 Gb
+                PIECE=20 # 1 Mb
+        elif [ "$TAILLE" -lt 4194304 ]; then # - of 4 Gb
+                PIECE=21  # 2 Mb
+        elif [ "$TAILLE" -lt 8388608 ]; then # - of 8 Gb
+                PIECE=22 # 4 Mb
+        elif [ "$TAILLE" -lt 16777216 ]; then # - of 16 Gb
+                PIECE=23 # 8 Mb
+        elif [ "$TAILLE" -lt 33554432 ]; then # - of 32 Gb
+                PIECE=24 # 16 Mb
+        elif [ "$TAILLE" -ge 33554432 ]; then # + of 32 Gb
+                PIECE=25 # 32 Mb
         fi
 }
 ###
 
-# Fonction creation des .torrents
+# Function creation of .torrents
 FONCCREATESERIE () {
-	mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPSERIE"/"$FILE"
+	mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPSERIE"/"$FILE"
 	chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEFILM () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPFILM"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPFILM"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEANIMATION () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPANIMATION"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPANIMATION"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
-FONCCREATEJEU () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPJEU"/"$FILE"
+FONCCREATEGAME () {
+        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPGAME"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
-FONCCREATEMUSIQUE () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPMUSIQU"/"$FILE"
+FONCCREATEMUSIC () {
+        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPMUSIQU"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
-FONCCREATEXXX () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -t "$THREAD" "$UPXXX"/"$FILE"
+FONCCREATEEXTRA () {
+        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPEXTRA"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 ###
 
 # NFO
-# Creation repertoire nfo et .torrent
+# Creation nfo directory and .torrent
 FONCCREATESTOCKNFO () {
 	if [ ! -d "$STOCKNFO" ]; then
-                echo "Creation du dossier de stockage des fichiers .nfo..."
+                echo "Creation of the file storage folder .nfo..."
                 mkdir "$STOCKNFO"
                 chown -Rf "$USER" "$STOCKNFO" && chmod 755 "$STOCKNFO"
         fi
 }
 FONCCREATESTOCKTOR () {
         if [ ! -d "/home/$USER/stocktorrents" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent..."
+                echo "Creation of the file storage folder .torrent..."
                 mkdir "/home/$USER/stocktorrents"
                 chown -Rf "$USER" "/home/$USER/stocktorrents" && chmod 755 "/home/$USER/stocktorrents"
         fi
@@ -265,59 +265,62 @@ FONCCREATENFOSERIE () {
 FONCCREATENFOFILM () {
         mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPFILM"/"$FILE"
 }
+FONCCREATENFOGAME () {
+        mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPGAME"/"$FILE"
+}
 FONCCREATENFOANIMATION () {
         mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPANIMATION"/"$FILE"
 }
-FONCCREATENFOMUSIQUE () {
-        mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPMUSIQUE"/"$FILE"
+FONCCREATENFOMUSIC () {
+        mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPMUSIC"/"$FILE"
 }
-FONCCREATENFOXXX () {
-        mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPXXX"/"$FILE"
+FONCCREATENFOEXTRA () {
+        mediainfo  --logfile="$STOCKNFO"/"$FILE".nfo "$UPEXTRA"/"$FILE"
 }
 
 ###
 
-# Creation repertoire des .torrent. Ils sont tries pour faciliter la recuperation par categorie.
+# Creation of .torrent directory. They are sorted to facilitate recovery by category.
 FONCCREATESTOCKTORSERIE () {
         if [ ! -d "$TORSERIE" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les series..."
+                echo "Creation of the file storage folder .torrent for the series..."
                 mkdir "$TORSERIE"
                 chown -Rf "$USER" "$TORSERIE" && chmod 755 "$TORSERIE"
         fi
 }
 FONCCREATESTOCKTORFILM () {
         if [ ! -d "$TORFILM" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les films..."
+                echo "Creation of the file storage folder .torrent for the films..."
                 mkdir "$TORFILM"
                 chown -Rf "$USER" "$TORFILM" && chmod 755 "$TORFILM"
         fi
 }
 FONCCREATESTOCKTORANIMATION () {
         if [ ! -d "$TORANIMATION" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les animations..."
+                echo "Creation of the file storage folder .torrent for the animations..."
                 mkdir "$TORANIMATION"
                 chown -Rf "$USER" "$TORANIMATION" && chmod 755 "$TORANIMATION"
         fi
 }
-FONCCREATESTOCKTORJEU () {
-        if [ ! -d "$TORJEU" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les jeux..."
-                mkdir "$TORJEU"
-                chown -Rf "$USER" "$TORJEU" && chmod 755 "$TORJEU"
+FONCCREATESTOCKTORGAME () {
+        if [ ! -d "$TORGAME" ]; then
+                echo "Creation of the file storage folder .torrent for the games..."
+                mkdir "$TORGAME"
+                chown -Rf "$USER" "$TORGAME" && chmod 755 "$TORGAME"
         fi
 }
-FONCCREATESTOCKTORMUSIQUE () {
-        if [ ! -d "$TORMUSIQUE" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les musiques..."
-                mkdir "$TORMUSIQUE"
-                chown -Rf "$USER" "$TORMUSIQUE" && chmod 755 "$TORMUSIQUE"
+FONCCREATESTOCKTORMUSIC () {
+        if [ ! -d "$TORMUSIC" ]; then
+                echo "Creation of the file storage folder .torrent for the MUSICs..."
+                mkdir "$TORMUSIC"
+                chown -Rf "$USER" "$TORMUSIC" && chmod 755 "$TORMUSIC"
         fi
 }
-FONCCREATESTOCKTORXXX () {
-        if [ ! -d "$TORXXX" ]; then
-                echo "Creation du dossier de stockage des fichiers .torrent pour les videos XXX..."
-                mkdir "$TORXXX"
-                chown -Rf "$USER" "$TORXXX" && chmod 755 "$TORXXX"
+FONCCREATESTOCKTOREXTRA () {
+        if [ ! -d "$TOREXTRA" ]; then
+                echo "Creation of the file storage folder .torrent for the videos EXTRA..."
+                mkdir "$TOREXTRA"
+                chown -Rf "$USER" "$TOREXTRA" && chmod 755 "$TOREXTRA"
         fi
 }
 ###
@@ -325,15 +328,15 @@ FONCCREATESTOCKTORXXX () {
 # Script
 if [ "$1" = "--serie" ]; then
 	if [ ! -d "$UPSERIE" ]; then
-		echo "Creation du dossier series..."
+		echo "Creation of the file series..."
 		mkdir "$UPSERIE"
 		chown -Rf "$USER" && chmod 755 "$UPSERIE"
 	fi
-	echo "Veullez saisir le nom du fichier ou du dossier"
+	echo "Please enter the name of the file or folder"
 	read FILE
 	FONCCREATESTOCKTORSERIE
 	if [ -f "$TORSERIE"/"$FILE".torrent ]; then
-		echo "Le fichier .torrent existe deja."
+		echo "The file .torrent there is left."
 	fi
 	FONCAUTOSERIE
 	FONCCREATESERIE
@@ -343,14 +346,14 @@ if [ "$1" = "--serie" ]; then
 
 elif [ "$1" = "--film" ]; then
 	if [ ! -d "$UPFILM" ]; then
-                echo "Creation du dossier film..."
+                echo "Creation of the file film..."
                 mkdir "$UPFILM"
                 chown -Rf "$USER" && chmod 755 "$UPFILM"
         fi
         if [ -f "$TORFILM"/"$FILE".torrent ]; then
-                echo "Le fichier .torrent existe deja."
+                echo "The file .torrent there is left."
         fi
-        echo "Veullez saisir le nom du fichier ou du dossier"
+        echo "Please enter the name of the file or folder"
         read FILE
 	FONCCREATESTOCKTORFILM
         FONCAUTOFILM
@@ -361,15 +364,15 @@ elif [ "$1" = "--film" ]; then
 
 elif [ "$1" = "--animation" ]; then
 	if [ ! -d "$UPANIMATION" ]; then
-                echo "Creation du dossier animation..."
+                echo "Creation of the file animation..."
                 mkdir "$UPANIMATION"
                 chown -Rf "$USER" && chmod 755 "$UPANIMATION"
         fi
-        echo "Veullez saisir le nom du fichier ou du dossier"
+        echo "Please enter the name of the file or folder"
         read FILE
 	FONCCREATESTOCKTORANIMATION
         if [ -f "$TORANIMATION"/"$FILE".torrent ]; then
-                echo "Le fichier .torrent existe deja."
+                echo "The file .torrent there is left."
         fi
         FONCAUTOANIMATION
         FONCCREATEANIMATION
@@ -377,55 +380,57 @@ elif [ "$1" = "--animation" ]; then
 	FONCCREATESTOCKNFO
 	FONCCREATENFOANIMATION
 
-elif [ "$1" = "--jeu" ]; then
-	if [ ! -d "$UPJEU" ]; then
-                echo "Creation du dossier jeux..."
-                mkdir "$UPJEU"
-                chown -Rf "$USER" && chmod 755 "$UPJEU"
+elif [ "$1" = "--game" ]; then
+	if [ ! -d "$UPGAME" ]; then
+                echo "Creation of the file games..."
+                mkdir "$UPGAME"
+                chown -Rf "$USER" && chmod 755 "$UPGAME"
         fi
-        echo "Veullez saisir le nom du fichier ou du dossier"
+        echo "Please enter the name of the file or folder"
         read FILE
-	FONCCREATESTOCKTORJEU
-        if [ -f "$TORJEU"/"$FILE".torrent ]; then
-                echo "Le fichier .torrent existe deja."
+	FONCCREATESTOCKTORGAME
+        if [ -f "$TORGAME"/"$FILE".torrent ]; then
+                echo "The file .torrent there is left."
         fi
-        FONCAUTOJEU
-        FONCCREATEJEU
-        mv "$FILE".torrent "$TORJEU"/"$FILE".torrent
+        FONCAUTOGAME
+        FONCCREATEGAME
+        mv "$FILE".torrent "$TORGAME"/"$FILE".torrent
+    FONCCREATESTOCKNFO
+	FONCCREATENFOGAME
 
-elif [ "$1" = "--musique" ]; then
-	if [ ! -d "$UPMUSIQUE" ]; then
-                echo "Creation du dossier musique..."
-                mkdir "$UPMUSIQUE"
-                chown -Rf "$USER" && chmod 755 "$UPMUSIQUE"
+elif [ "$1" = "--music" ]; then
+	if [ ! -d "$UPMUSIC" ]; then
+                echo "Creation of the file music..."
+                mkdir "$UPMUSIC"
+                chown -Rf "$USER" && chmod 755 "$UPMUSIC"
         fi
-        if [ -f "$TORMUSIQUE"/"$FILE".torrent ]; then
-                echo "Le fichier .torrent existe deja."
+        if [ -f "$TORMUSIC"/"$FILE".torrent ]; then
+                echo "The file .torrent there is left."
         fi
-        echo "Veullez saisir le nom du fichier ou du dossier"
+        echo "Please enter the name of the file or folder"
         read FILE
-	FONCCREATESTOCKTORMUSIQUE
-        FONCAUTOMUSIQUE
-        FONCCREATEMUSIQUE
-        mv "$FILE".torrent "$TORMUSIQUE"/"$FILE".torrent
+	FONCCREATESTOCKTORMUSIC
+        FONCAUTOMUSIC
+        FONCCREATEMUSIC
+        mv "$FILE".torrent "$TORMUSIC"/"$FILE".torrent
         FONCCREATESTOCKNFO
-	FONCCREATENFOMUSIQUE
+	FONCCREATENFOMUSIC
 
-elif [ "$1" = "--xxx" ]; then
-	if [ ! -d "$UPXXX" ]; then
-                echo "Creation du dossier pour adultes..."
-                mkdir "$UPXXX"
-                chown -Rf "$USER" && chmod 755 "$UPXXX"
+elif [ "$1" = "--extra" ]; then
+	if [ ! -d "$UPEXTRA" ]; then
+                echo "Creation of the file For Extra..."
+                mkdir "$UPEXTRA"
+                chown -Rf "$USER" && chmod 755 "$UPEXTRA"
         fi
-        echo "Veullez saisir le nom du fichier ou du dossier"
+        echo "Please enter the name of the file or folder"
         read FILE
-	FONCCREATESTOCKTORXXX
-        if [ -f "$TORXXX"/"$FILE".torrent ]; then
-                echo "Le fichier .torrent existe deja."
+	FONCCREATESTOCKTOREXTRA
+        if [ -f "$TOREXTRA"/"$FILE".torrent ]; then
+                echo "The file .torrent there is left."
         fi
-        FONCAUTOXXX
-        FONCCREATEXXX
-        mv "$FILE".torrent "$TORMUSIQUE"/"$FILE".torrent
+        FONCAUTOEXTRA
+        FONCCREATEEXTRA
+        mv "$FILE".torrent "$TORMUSIC"/"$FILE".torrent
         FONCCREATESTOCKNFO
-	FONCCREATENFOXXX
+	FONCCREATENFOEXTRA
 fi
