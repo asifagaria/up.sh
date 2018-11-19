@@ -1,7 +1,7 @@
 # .Torrent and fast .nfo script with mktorrent and mediainfo
 
 * Need Debian 7/8/9
-* Inclus mktorrent et mediainfo
+* Included mktorrent and mediainfo
 
 **Author :** Asifagaria
 
