@@ -33,6 +33,7 @@ TRACKER="http://tracker.bittorrent.com:8080//announce" #https://yggtorrent.com/u
 ./up.sh --animation
 ./up.sh --music
 ./up.sh --game
+./up.sh --extra
 ```
 While running the script you will be asked for the name of the target file / folder.
 
