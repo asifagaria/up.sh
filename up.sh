@@ -212,32 +212,32 @@ FONCAUTOEXTRA () {
 
 # Function creation of .torrents
 FONCCREATESERIE () {
-	mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPSERIE"/"$FILE"
+	mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPSERIE"/"$FILE"
 	chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEFILM () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPFILM"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPFILM"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEANIMATION () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPANIMATION"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPANIMATION"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEGAME () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPGAME"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPGAME"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEMUSIC () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPMUSIQU"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPMUSIQU"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 
 FONCCREATEEXTRA () {
-        mktorrent -p -l "$PIECE" -a "$TRACKER" -a "$THREAD" "$UPEXTRA"/"$FILE"
+        mktorrent -p -l "$PIECE" -a "$TRACKER" "$UPEXTRA"/"$FILE"
         chown "$USER" "$FILE".torrent
 }
 ###
